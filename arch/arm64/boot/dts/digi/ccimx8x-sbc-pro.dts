@@ -280,7 +280,7 @@
 	canfd@0 {
                 compatible = "microchip,mcp2517fd";
                 reg = <0x0>;
-                clocks = <&clk20m>;
+                //clocks = <&clk20m>;
                 //#interrupts = <&gpio3 RK_PB6 IRQ_TYPE_LEVEL_LOW>;
                 //interrupt-parent = <&gpio3>;
                 //interrupts = <RK_PB6 IRQ_TYPE_LEVEL_LOW>;
