@@ -276,7 +276,18 @@
 	 * Add your slave devices here. Next is an example of spidev.
 	 * Expect a harmless kernel warning if you enable spidev as slave.
 	 */
-	spidev@0 {
+
+	canfd@0 {
+                compatible = "microchip,mcp2515", "microchip,mcp2518fd";
+                reg = <0x0>;
+                clocks = <&clk20m>;
+                #interrupts = <&gpio3 RK_PB6 IRQ_TYPE_LEVEL_LOW>;
+                interrupt-parent = <&gpio3>;
+                interrupts = <RK_PB6 IRQ_TYPE_LEVEL_LOW>;
+                spi-max-frequency = <4000000>;
+        };
+
+	/*spidev@0 {
 		compatible = "spidev";
 		reg = <0>;
 		spi-max-frequency = <4000000>;
@@ -286,7 +297,7 @@
 		compatible = "spidev";
 		reg = <1>;
 		spi-max-frequency = <4000000>;
-	};
+	};*/
 };
 
 /* LPUART0 on expansion header */
