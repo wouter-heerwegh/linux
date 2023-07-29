@@ -281,10 +281,9 @@
                 compatible = "microchip,mcp2517fd";
                 reg = <0x0>;
                 //clocks = <&clk20m>;
-                //#interrupts = <&gpio3 RK_PB6 IRQ_TYPE_LEVEL_LOW>;
                 interrupt-parent = <&lsio_gpio1>;
                 interrupts = <1 IRQ_TYPE_LEVEL_LOW>;
-                spi-max-frequency = <4000000>;
+                spi-max-frequency = <20000000>;
         };
 
 	//spidev@0 {
@@ -476,7 +475,7 @@
 			/* GPIO4_21 */
 			IMX8QXP_USDHC1_WP_LSIO_GPIO4_IO21			0x06000020
 			/* SPI0_IRQ_N */
-			//IMX8QXP_SPI2_SDO_LSIO_GPIO1_IO01			0x06000020
+			IMX8QXP_SPI2_SDO_LSIO_GPIO1_IO01			0x06000020
 			/* EXP_I2C_IRQ_N */
 			IMX8QXP_QSPI0A_SS1_B_LSIO_GPIO3_IO15		0x06000020
 			/* EXP_I2C_GPIO */
