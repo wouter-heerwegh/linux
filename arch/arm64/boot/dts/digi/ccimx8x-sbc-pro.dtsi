@@ -137,6 +137,13 @@
 			vsync-active = <1>;
 		};
 	};
+	
+	/* fixed crystal dedicated to mcp2517fd */
+	mcp2517fd_osc: mcp2517fd_osc {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <20000000>;
+	};
 
 	regulators {
 		compatible = "simple-bus";
