@@ -470,9 +470,11 @@
 	pinctrl-0 = <&pinctrl_expansion>;
 	
 	/* SPI0_IRQ_N */
-	pinctrl_mcp2517fd: mcp2517fdgrp{
-		IMX8QXP_SPI2_SDO_LSIO_GPIO1_IO01			0x06000020
-	}
+	pinctrl_mcp2517fd: mcp2517fdgrp {
+		fsl,pins = <
+			IMX8QXP_SPI2_SDO_LSIO_GPIO1_IO01			0x06000020
+		>;
+	};
 
 
 	/* Expansion Connector */
