@@ -101,12 +101,14 @@ static int mcp25xxfd_base_probe(struct spi_device *spi)
 	mutex_init(&priv->spi_rxtx_lock);
 
 	ret = mcp25xxfd_clock_init(priv);
+	dev_info(&spi->dev, "mcp clock init\n");
 	if (ret)
 		goto out_free;
 
 	/* Configure the SPI bus */
 	spi->bits_per_word = 8;
 	ret = spi_setup(spi);
+	dev_info(&spi->dev, "mcp spi bus configuration\n");
 	if (ret)
 		goto out_clk;
 
@@ -117,21 +119,27 @@ static int mcp25xxfd_base_probe(struct spi_device *spi)
 	}
 
 	ret = mcp25xxfd_base_power_enable(priv->power, 1);
+	dev_info(&spi->dev, "mcp power enable\n");
 	if (ret)
 		goto out_clk;
 
 	/* this will also enable the MCP25XXFD_CLK_USER_CAN clock */
 	ret = mcp25xxfd_clock_probe(priv);
-	if (ret)
+	dev_info(&spi->dev, "mcp clock probe\n");
+	if (ret){
+		dev_info(&spi->dev, "mcp clock probe wrong, erroring out\n");
 		goto out_probe;
+	}
 
 	/* enable the can controller clock */
 	ret = mcp25xxfd_clock_start(priv, MCP25XXFD_CLK_USER_CAN);
+	dev_info(&spi->dev, "mcp clock start\n");
 	if (ret)
 		goto out_probe;
 
 	/* try to identify the can-controller - we need the clock here */
 	ret = mcp25xxfd_can_probe(priv);
+	dev_info(&spi->dev, "mcp can probe\n");
 	if (ret)
 		goto out_ctlclk;
 
@@ -140,26 +148,31 @@ static int mcp25xxfd_base_probe(struct spi_device *spi)
 
 	/* disable interrupts */
 	ret = mcp25xxfd_int_enable(priv, false);
+	dev_info(&spi->dev, "mcp disable irq\n");
 	if (ret)
 		goto out_debugfs;
 
 	/* setup ECC for SRAM */
 	ret = mcp25xxfd_ecc_enable(priv);
+	dev_info(&spi->dev, "mcp enable ecc\n");
 	if (ret)
 		goto out_debugfs;
 
 	/* setting up GPIO */
 	ret = mcp25xxfd_gpio_setup(priv);
+	dev_info(&spi->dev, "mcp setup gpio\n");
 	if (ret)
 		goto out_debugfs;
 
 	/* setting up CAN */
 	ret = mcp25xxfd_can_setup(priv);
+	dev_info(&spi->dev, "mcp setup can\n");
 	if (ret)
 		goto out_gpio;
 
 	/* and put controller to sleep by stopping the can clock */
 	ret = mcp25xxfd_clock_stop(priv, MCP25XXFD_CLK_USER_CAN);
+	dev_info(&spi->dev, "mcp sleep\n");
 	if (ret)
 		goto out_can;
 

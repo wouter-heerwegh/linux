@@ -321,6 +321,7 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
 	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
 
 	if (config.speed_hz > perclk_rate / 2) {
+		dev_info(fsl_lpspi->dev, "SPI clock speed: %lu, speed_hz: %d", perclk_rate, config.speed_hz);
 		dev_err(fsl_lpspi->dev,
 		      "per-clk should be at least two times of transfer speed");
 		return -EINVAL;

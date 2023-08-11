@@ -3213,8 +3213,11 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
 	struct spi_transfer *xfer;
 	int w_size;
 
-	if (list_empty(&message->transfers))
+	if (list_empty(&message->transfers)){
+		dev_info(&spi->dev, "mcp message transfers empty list?\n");
 		return -EINVAL;
+	}
+		
 
 	/* If an SPI controller does not support toggling the CS line on each
 	 * transfer (indicated by the SPI_CS_WORD flag) or we are using a GPIO
@@ -3236,6 +3239,7 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
 		ret = spi_split_transfers_maxsize(ctlr, message, maxsize,
 						  GFP_KERNEL);
 		if (ret)
+			dev_info(&spi->dev, "mcp split transfers maxsize return: %d\n", ret);
 			return ret;
 
 		list_for_each_entry(xfer, &message->transfers, transfer_list) {
@@ -3256,12 +3260,19 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
 		unsigned flags = ctlr->flags;
 
 		list_for_each_entry(xfer, &message->transfers, transfer_list) {
-			if (xfer->rx_buf && xfer->tx_buf)
+			if (xfer->rx_buf && xfer->tx_buf){
+				dev_info(&spi->dev, "mcp list for each error\n");
 				return -EINVAL;
-			if ((flags & SPI_CONTROLLER_NO_TX) && xfer->tx_buf)
+			}
+			if ((flags & SPI_CONTROLLER_NO_TX) && xfer->tx_buf){
+				dev_info(&spi->dev, "mcp list for each error\n");
 				return -EINVAL;
-			if ((flags & SPI_CONTROLLER_NO_RX) && xfer->rx_buf)
+			}
+			if ((flags & SPI_CONTROLLER_NO_RX) && xfer->rx_buf){
+				dev_info(&spi->dev, "mcp list for each error\n");
 				return -EINVAL;
+			}
+
 		}
 	}
 
@@ -3286,8 +3297,10 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
 		if (ctlr->max_speed_hz && xfer->speed_hz > ctlr->max_speed_hz)
 			xfer->speed_hz = ctlr->max_speed_hz;
 
-		if (__spi_validate_bits_per_word(ctlr, xfer->bits_per_word))
+		if (__spi_validate_bits_per_word(ctlr, xfer->bits_per_word)){
+			dev_info(&spi->dev, "mcp spi validate bits per word error\n");
 			return -EINVAL;
+		}
 
 		/*
 		 * SPI transfer length should be multiple of SPI word size
@@ -3301,12 +3314,17 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
 			w_size = 4;
 
 		/* No partial transfers accepted */
-		if (xfer->len % w_size)
+		if (xfer->len % w_size){
+			dev_info(&spi->dev, "mcp partial transfer error\n");
 			return -EINVAL;
+		}
 
 		if (xfer->speed_hz && ctlr->min_speed_hz &&
-		    xfer->speed_hz < ctlr->min_speed_hz)
-			return -EINVAL;
+		    xfer->speed_hz < ctlr->min_speed_hz){
+				dev_info(&spi->dev, "mcp iet me speed error\n");
+				return -EINVAL;	
+			}
+
 
 		if (xfer->tx_buf && !xfer->tx_nbits)
 			xfer->tx_nbits = SPI_NBITS_SINGLE;
@@ -3319,27 +3337,39 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
 		if (xfer->tx_buf) {
 			if (xfer->tx_nbits != SPI_NBITS_SINGLE &&
 				xfer->tx_nbits != SPI_NBITS_DUAL &&
-				xfer->tx_nbits != SPI_NBITS_QUAD)
-				return -EINVAL;
+				xfer->tx_nbits != SPI_NBITS_QUAD){
+					dev_info(&spi->dev, "mcp bit checking error\n");
+					return -EINVAL;
+				}
 			if ((xfer->tx_nbits == SPI_NBITS_DUAL) &&
-				!(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD)))
-				return -EINVAL;
+				!(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD))){
+					dev_info(&spi->dev, "mcp bit checking error\n");
+					return -EINVAL;
+				}
 			if ((xfer->tx_nbits == SPI_NBITS_QUAD) &&
-				!(spi->mode & SPI_TX_QUAD))
-				return -EINVAL;
+				!(spi->mode & SPI_TX_QUAD)){
+					dev_info(&spi->dev, "mcp bit checking error\n");
+					return -EINVAL;
+				}
 		}
 		/* check transfer rx_nbits */
 		if (xfer->rx_buf) {
 			if (xfer->rx_nbits != SPI_NBITS_SINGLE &&
 				xfer->rx_nbits != SPI_NBITS_DUAL &&
-				xfer->rx_nbits != SPI_NBITS_QUAD)
-				return -EINVAL;
+				xfer->rx_nbits != SPI_NBITS_QUAD){
+					dev_info(&spi->dev, "mcp bit checking error\n");
+					return -EINVAL;
+				}
 			if ((xfer->rx_nbits == SPI_NBITS_DUAL) &&
-				!(spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD)))
-				return -EINVAL;
+				!(spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD))){
+					dev_info(&spi->dev, "mcp bit checking error\n");
+					return -EINVAL;
+				}
 			if ((xfer->rx_nbits == SPI_NBITS_QUAD) &&
-				!(spi->mode & SPI_RX_QUAD))
-				return -EINVAL;
+				!(spi->mode & SPI_RX_QUAD)){
+					dev_info(&spi->dev, "mcp bit checking error\n");
+					return -EINVAL;
+				}
 		}
 
 		if (xfer->word_delay_usecs < spi->word_delay_usecs)
@@ -3498,6 +3528,8 @@ static int __spi_sync(struct spi_device *spi, struct spi_message *message)
 	unsigned long flags;
 
 	status = __spi_validate(spi, message);
+	dev_info(&spi->dev, "mcp SPI validate: %d\n", status);
+
 	if (status != 0)
 		return status;
 
@@ -3519,10 +3551,11 @@ static int __spi_sync(struct spi_device *spi, struct spi_message *message)
 		trace_spi_message_submit(message);
 
 		status = __spi_queued_transfer(spi, message, false);
-
+		dev_info(&spi->dev, "mcp spi queued transfer: %d\n", status);
 		spin_unlock_irqrestore(&ctlr->bus_lock_spinlock, flags);
 	} else {
 		status = spi_async_locked(spi, message);
+		dev_info(&spi->dev, "mcp spi async locked: %d\n", status);
 	}
 
 	if (status == 0) {

@@ -291,6 +291,8 @@ static int _mcp25xxfd_clock_probe(struct mcp25xxfd_priv *priv)
 	/* check clock register that the clock is ready or disabled */
 	ret = mcp25xxfd_cmd_read(priv->spi, MCP25XXFD_OSC,
 				 &priv->regs.osc);
+	dev_info(&priv->spi->dev, "mcp clock probe cmd read return: %d\n", ret);
+
 	if (ret)
 		return ret;
 
@@ -328,7 +330,7 @@ int mcp25xxfd_clock_probe(struct mcp25xxfd_priv *priv)
 
 	/* this will also enable the MCP25XXFD_CLK_USER_CAN clock */
 	ret = _mcp25xxfd_clock_probe(priv);
-
+	dev_info(&priv->spi->dev, "return value inside clock probe %d\n", ret);
 	/* on error retry a second time */
 	if (ret == -ENODEV) {
 		ret = _mcp25xxfd_clock_probe(priv);
@@ -414,6 +416,7 @@ int mcp25xxfd_clock_init(struct mcp25xxfd_priv *priv)
 		return PTR_ERR(clk);
 
 	freq = clk_get_rate(clk);
+	dev_info(&priv->spi->dev, "KAK FREQ %d\n", freq);
 	if (freq < MCP25XXFD_MIN_CLOCK_FREQUENCY ||
 	    freq > MCP25XXFD_MAX_CLOCK_FREQUENCY) {
 		dev_err(&spi->dev,

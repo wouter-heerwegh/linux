@@ -278,6 +278,7 @@ static int mcp251x_spi_trans(struct spi_device *spi, int len)
 	spi_message_add_tail(&t, &m);
 
 	ret = spi_sync(spi, &m);
+	dev_info(&spi->dev, "spi_sync failed @ mcp251x.c line 280\n");
 	if (ret)
 		dev_err(&spi->dev, "spi transfer failed: ret = %d\n", ret);
 	return ret;

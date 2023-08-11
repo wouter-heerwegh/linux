@@ -101,6 +101,8 @@ static int mcp25xxfd_cmd_write_then_read(struct spi_device *spi,
 
 	/* get pointer to buffers */
 	ret = mcp25xxfd_cmd_alloc_buf(spi, tx_len + rx_len, &spi_tx, &spi_rx);
+	dev_info(&spi->dev, "mcp cmd alloc buf return: %d\n", ret);
+
 	if (ret)
 		return ret;
 
@@ -127,6 +129,8 @@ static int mcp25xxfd_cmd_write_then_read(struct spi_device *spi,
 
 	/* do the transfer */
 	ret = mcp25xxfd_cmd_sync_transfer(spi, xfer, xfers);
+	dev_info(&spi->dev, "mcp cmd sync transfer return: %d\n", ret);
+
 	if (ret)
 		goto out;
 
@@ -183,6 +187,8 @@ int mcp25xxfd_cmd_readn(struct spi_device *spi, u32 reg,
 	mcp25xxfd_cmd_calc(MCP25XXFD_INSTRUCTION_READ, reg, cmd);
 
 	ret = mcp25xxfd_cmd_write_then_read(spi, &cmd, 2, data, n);
+	dev_info(&spi->dev, "mcp cmd write then read return: %d\n", ret);
+
 	if (ret)
 		return ret;
 
@@ -209,6 +215,8 @@ int mcp25xxfd_cmd_read_mask(struct spi_device *spi, u32 reg,
 	*data = 0;
 	ret = mcp25xxfd_cmd_readn(spi, reg + first_byte,
 				  ((void *)data + first_byte), len_byte);
+	dev_info(&spi->dev, "mcp cmd read mask partial read return: %d\n", ret);
+
 	if (ret)
 		return ret;
 
