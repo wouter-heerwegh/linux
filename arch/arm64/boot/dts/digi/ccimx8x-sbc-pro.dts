@@ -474,7 +474,7 @@
 	/* SPI0_IRQ_N */
 	pinctrl_mcp2517fd: mcp2517fdgrp {
 		fsl,pins = <
-			IMX8QXP_SPI2_SDO_LSIO_GPIO1_IO01			0xce000020
+			IMX8QXP_SPI2_SDO_LSIO_GPIO1_IO01			0xc0000060
 		>;
 	};
 
