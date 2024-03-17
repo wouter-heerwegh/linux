@@ -273,11 +273,9 @@
 	#address-cells = <1>;
 	#size-cells = <0>;
 	num-cs = <1>;
+	cs-gpios = <&lsio_gpio1 8 GPIO_ACTIVE_LOW>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_lpspi0>;
-	cs-gpios = <&lsio_gpio1 8 GPIO_ACTIVE_LOW>;
-	// assigned-clocks = <&clk IMX_SC_R_SPI_0 IMX_SC_PM_CLK_PER>;
-	// assigned-clock-rates = <40000000>;
 	status = "okay";
 
 	/*
@@ -469,12 +467,21 @@
 /* IOMUX */
 &iomuxc {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_expansion &pinctrl_mcp2517fd>;
-	
+	pinctrl-0 = <&pinctrl_expansion &pinctrl_mcp2517fd &pinctrl_lpspi0>;
+
+	pinctrl_lpspi0: lpspi0grp {
+		fsl,pins = <
+			IMX8QXP_SPI0_SCK_ADMA_SPI0_SCK	0x0600004c
+			IMX8QXP_SPI0_SDO_ADMA_SPI0_SDO	0x0600004c
+			IMX8QXP_SPI0_SDI_ADMA_SPI0_SDI	0x0600004c
+			IMX8QXP_SPI0_CS0_LSIO_GPIO1_IO08	0x06000020
+		>;
+	};
+
 	/* SPI0_IRQ_N */
 	pinctrl_mcp2517fd: mcp2517fdgrp {
 		fsl,pins = <
-			IMX8QXP_SPI2_SDO_LSIO_GPIO1_IO01			0x06000020
+			IMX8QXP_SPI0_CS1_LSIO_GPIO1_IO07			0x06000020
 		>;
 	};
 
@@ -493,7 +500,7 @@
 			/* GPIO4_21 */
 			IMX8QXP_USDHC1_WP_LSIO_GPIO4_IO21			0x06000020
 			/* SPI0_IRQ_N */
-			/* IMX8QXP_SPI2_SDO_LSIO_GPIO1_IO01			0x06000020*/
+		//	/* IMX8QXP_SPI2_SDO_LSIO_GPIO1_IO01			0x06000020*/
 			/* EXP_I2C_IRQ_N */
 			IMX8QXP_QSPI0A_SS1_B_LSIO_GPIO3_IO15		0x06000020
 			/* EXP_I2C_GPIO */
