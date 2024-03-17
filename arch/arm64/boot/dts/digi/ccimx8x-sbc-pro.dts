@@ -467,16 +467,16 @@
 /* IOMUX */
 &iomuxc {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_expansion &pinctrl_mcp2517fd &pinctrl_lpspi0>;
+	pinctrl-0 = <&pinctrl_expansion>;
 
-	pinctrl_lpspi0: lpspi0grp {
-		fsl,pins = <
-			IMX8QXP_SPI0_SCK_ADMA_SPI0_SCK	0x0600004c
-			IMX8QXP_SPI0_SDO_ADMA_SPI0_SDO	0x0600004c
-			IMX8QXP_SPI0_SDI_ADMA_SPI0_SDI	0x0600004c
-			IMX8QXP_SPI0_CS0_LSIO_GPIO1_IO08	0x06000020
-		>;
-	};
+	// pinctrl_lpspi0: lpspi0grp {
+	// 	fsl,pins = <
+	// 		IMX8QXP_SPI0_SCK_ADMA_SPI0_SCK	0x0600004c
+	// 		IMX8QXP_SPI0_SDO_ADMA_SPI0_SDO	0x0600004c
+	// 		IMX8QXP_SPI0_SDI_ADMA_SPI0_SDI	0x0600004c
+	// 		IMX8QXP_SPI0_CS0_LSIO_GPIO1_IO08	0x06000020
+	// 	>;
+	// };
 
 	/* SPI0_IRQ_N */
 	pinctrl_mcp2517fd: mcp2517fdgrp {
