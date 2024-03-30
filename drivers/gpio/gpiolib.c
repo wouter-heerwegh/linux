@@ -3906,6 +3906,26 @@ int gpiochip_lock_as_irq(struct gpio_chip *chip, unsigned int offset)
 		}
 	}
 
+	if(test_bit(FLAG_OPEN_DRAIN, &desc->flags)){
+		chip_err(chip,
+			 "%s: OPENDRAIN IS OKAY\n",
+			 __func__);
+	} else {
+		chip_err(chip,
+			 "%s: OPENDRAIN IS NOT SET\n",
+			 __func__);
+	}
+
+	if (!test_bit(FLAG_IS_OUT, &desc->flags)){
+		chip_err(chip,
+			 "%s: SET AS INPUT\n",
+			 __func__);
+	} else {
+		chip_err(chip,
+			 "%s: SET AS OUTPUT\n",
+			 __func__);
+	}
+
 	/* To be valid for IRQ the line needs to be input or open drain */
 	if (test_bit(FLAG_IS_OUT, &desc->flags) &&
 	    !test_bit(FLAG_OPEN_DRAIN, &desc->flags)) {

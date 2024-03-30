@@ -348,11 +348,11 @@
 			>;
 		};
 
-		pinctrl_ioexp_rst_sleep: ioexp_rst_sleep_grp {
-			fsl,pins = <
-				IMX8QXP_SPI2_SDO_LSIO_GPIO1_IO01	0x07800021
-			>;
-		};
+		// pinctrl_ioexp_rst_sleep: ioexp_rst_sleep_grp {
+		// 	fsl,pins = <
+		// 		IMX8QXP_SPI2_SDO_LSIO_GPIO1_IO01	0x07800021
+		// 	>;
+		// };
 
 		pinctrl_modem_reset: modemresetgrp {
 			fsl,pins = <

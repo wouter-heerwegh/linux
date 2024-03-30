@@ -470,7 +470,9 @@ static int mxc_gpio_irq_reqres(struct irq_data *d)
 {
 	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(d);
 	struct mxc_gpio_port *port = gc->private;
-
+	dev_err(port->gc.parent,
+			"DUMMY PRINT\n",
+			d->hwirq);
 	if (gpiochip_lock_as_irq(&port->gc, d->hwirq)) {
 		dev_err(port->gc.parent,
 			"unable to lock HW IRQ %lu for IRQ\n",

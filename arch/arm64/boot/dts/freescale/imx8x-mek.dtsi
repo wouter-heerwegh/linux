@@ -1310,11 +1310,11 @@
 		>;
 	};
 
-	pinctrl_ioexp_rst: ioexp_rst_grp {
-		fsl,pins = <
-			IMX8QXP_SPI2_SDO_LSIO_GPIO1_IO01			0x06000021
-		>;
-	};
+	// pinctrl_ioexp_rst: ioexp_rst_grp {
+	// 	fsl,pins = <
+	// 		IMX8QXP_SPI2_SDO_LSIO_GPIO1_IO01			0x06000021
+	// 	>;
+	// };
 
 	pinctrl_isl29023: isl29023grp {
 		fsl,pins = <

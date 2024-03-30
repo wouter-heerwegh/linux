@@ -186,7 +186,7 @@
 };
 
 &lvds_backlight0 {
-	status = "okay";
+	status = "disabled";
 };
 
 &lvds0_panel {
@@ -267,15 +267,17 @@
 //	extends-desktop = <&lvds0>;
 //};
 
+/* Disable for irq line of spi0 */
+&lpspi2 {
+	status = "disabled";
+};
+
+&reg_5v_display {
+	regulator-always-on;
+};
 
 /* LPSPI0 on expansion header */
 &lpspi0 {
-	#address-cells = <1>;
-	#size-cells = <0>;
-	num-cs = <1>;
-	cs-gpios = <&lsio_gpio1 8 GPIO_ACTIVE_LOW>;
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_lpspi0>;
 	status = "okay";
 
 	/*
@@ -290,9 +292,25 @@
 		pinctrl-0 = <&pinctrl_mcp2517fd>;
 		spi-max-frequency = <4000000>;
 		interrupt-parent = <&lsio_gpio1>;
-		interrupts = <1 IRQ_TYPE_LEVEL_LOW>;
+		interrupts = <13 IRQ_TYPE_LEVEL_LOW>;
 		clocks = <&mcp2517fd_osc>;
+		gpio-controller;
+		xceiver-supply = <&reg_5v_display>;
 	};
+
+	can5: can@4 {
+		reg = <1>;
+		compatible = "microchip,mcp2517fd";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_mcp2517fd_2>;
+		spi-max-frequency = <4000000>;
+		interrupt-parent = <&lsio_gpio1>;
+		interrupts = <14 IRQ_TYPE_LEVEL_LOW>;
+		clocks = <&mcp2517fd_osc>;
+		gpio-controller;
+		xceiver-supply = <&reg_5v_display>;
+	};
+
 
 	// spidev@0 {
 	// 	compatible = "spidev";
@@ -481,7 +499,13 @@
 	/* SPI0_IRQ_N */
 	pinctrl_mcp2517fd: mcp2517fdgrp {
 		fsl,pins = <
-			IMX8QXP_SPI0_CS1_LSIO_GPIO1_IO07			0x06000020
+			IMX8QXP_ADC_IN5_LSIO_GPIO1_IO13		0x24000060
+		>;
+	};
+
+	pinctrl_mcp2517fd_2: mcp2517fdgrp_2 {
+		fsl,pins = <
+			IMX8QXP_ADC_IN4_LSIO_GPIO1_IO14		0x24000060
 		>;
 	};
 
@@ -500,7 +524,7 @@
 			/* GPIO4_21 */
 			IMX8QXP_USDHC1_WP_LSIO_GPIO4_IO21			0x06000020
 			/* SPI0_IRQ_N */
-		//	/* IMX8QXP_SPI2_SDO_LSIO_GPIO1_IO01			0x06000020*/
+			/* IMX8QXP_SPI2_SDO_LSIO_GPIO1_IO01			0x06000020*/
 			/* EXP_I2C_IRQ_N */
 			IMX8QXP_QSPI0A_SS1_B_LSIO_GPIO3_IO15		0x06000020
 			/* EXP_I2C_GPIO */
@@ -508,7 +532,7 @@
 			/* GPIO4_19 */
 			IMX8QXP_USDHC1_RESET_B_LSIO_GPIO4_IO19		0x06000020
 			/* GPIO0_12 */
-			IMX8QXP_SPDIF0_EXT_CLK_LSIO_GPIO0_IO12		0x06000020
+			// IMX8QXP_SPDIF0_EXT_CLK_LSIO_GPIO0_IO12		0x06000020
 			/* GPIO5_09 */
 			IMX8QXP_ENET0_REFCLK_125M_25M_LSIO_GPIO5_IO09	0x06000020
 
@@ -522,9 +546,9 @@
 			/* M40_UART_TX */
 			IMX8QXP_ADC_IN3_LSIO_GPIO1_IO11			0x06000020
 			/* ADC_IN4 */
-			IMX8QXP_ADC_IN4_LSIO_GPIO1_IO14			0x06000020
+			// IMX8QXP_ADC_IN4_LSIO_GPIO1_IO14			0x06000020
 			/* ADC_IN5 */
-			IMX8QXP_ADC_IN5_LSIO_GPIO1_IO13			0x06000020
+			// IMX8QXP_ADC_IN5_LSIO_GPIO1_IO13			0x06000020
 		>;
 	};
 

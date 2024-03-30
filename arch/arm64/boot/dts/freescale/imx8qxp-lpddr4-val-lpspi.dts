@@ -20,14 +20,14 @@
 		>;
 	};
 
-	pinctrl_lpspi2: lpspi2grp {
-		fsl,pins = <
-			IMX8QXP_SPI2_SCK_ADMA_SPI2_SCK		0x600004c
-			IMX8QXP_SPI2_SDO_ADMA_SPI2_SDO		0x600004c
-			IMX8QXP_SPI2_SDI_ADMA_SPI2_SDI		0x600004c
-			IMX8QXP_SPI2_CS0_ADMA_SPI2_CS0		0x600004c
-		>;
-	};
+	// pinctrl_lpspi2: lpspi2grp {
+	// 	fsl,pins = <
+	// 		IMX8QXP_SPI2_SCK_ADMA_SPI2_SCK		0x600004c
+	// 		IMX8QXP_SPI2_SDO_ADMA_SPI2_SDO		0x600004c
+	// 		IMX8QXP_SPI2_SDI_ADMA_SPI2_SDI		0x600004c
+	// 		IMX8QXP_SPI2_CS0_ADMA_SPI2_CS0		0x600004c
+	// 	>;
+	// };
 };
 
 &lpspi0 {
