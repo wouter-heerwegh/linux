@@ -287,26 +287,26 @@
 
 	can4: can@3 {
 		reg = <0>;
-		compatible = "microchip,mcp2517fd";
+		compatible = "microchip,mcp2518fd";
 		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_mcp2517fd>;
+		pinctrl-0 = <&pinctrl_mcp2518fd>;
 		spi-max-frequency = <4000000>;
 		interrupt-parent = <&lsio_gpio1>;
 		interrupts = <13 IRQ_TYPE_LEVEL_LOW>;
-		clocks = <&mcp2517fd_osc>;
+		clocks = <&mcp2518fd_osc>;
 		gpio-controller;
 		xceiver-supply = <&reg_5v_display>;
 	};
 
 	can5: can@4 {
 		reg = <1>;
-		compatible = "microchip,mcp2517fd";
+		compatible = "microchip,mcp2518fd";
 		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_mcp2517fd_2>;
+		pinctrl-0 = <&pinctrl_mcp2518fd_2>;
 		spi-max-frequency = <4000000>;
 		interrupt-parent = <&lsio_gpio1>;
 		interrupts = <14 IRQ_TYPE_LEVEL_LOW>;
-		clocks = <&mcp2517fd_osc>;
+		clocks = <&mcp2518fd_osc>;
 		gpio-controller;
 		xceiver-supply = <&reg_5v_display>;
 	};
@@ -497,13 +497,13 @@
 	// };
 
 	/* SPI0_IRQ_N */
-	pinctrl_mcp2517fd: mcp2517fdgrp {
+	pinctrl_mcp2518fd: mcp2518fdgrp {
 		fsl,pins = <
 			IMX8QXP_ADC_IN5_LSIO_GPIO1_IO13		0x24000060
 		>;
 	};
 
-	pinctrl_mcp2517fd_2: mcp2517fdgrp_2 {
+	pinctrl_mcp2518fd_2: mcp2518fdgrp_2 {
 		fsl,pins = <
 			IMX8QXP_ADC_IN4_LSIO_GPIO1_IO14		0x24000060
 		>;
